@@ -1,10 +1,3 @@
-//
-//  RunTimeGameApp.swift
-//  RunTimeGame
-//
-//  Created by Vitor Silva Souza on 05/11/26.
-//
-
 import SwiftUI
 
 @main
