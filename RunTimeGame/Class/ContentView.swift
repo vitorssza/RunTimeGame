@@ -104,7 +104,7 @@ struct ContentView: View {
         .animation(.easeInOut, value: viewModel.showBoa)
     }
 }
-//
-//#Preview {
-//    ContentView()
-//}
+
+#Preview {
+    ContentView()
+}
