@@ -8,62 +8,168 @@ struct ContentView: View {
     }
     
     var body: some View {
+        
         VStack {
-            
             switch viewModel.state {
             case .disconnected:
-                Button("Buscar") {
-                    viewModel.startSearch()
+                
+                ZStack {
+                    Image ("sessao")
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea()
+                    
+                    VStack {
+                        Spacer()
+                        
+                        Text ("Jogo dos \n5 segundos")
+                            .font(.largeTitle)
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.white)
+                        
+                        Text ("Busque um parceiro e jogue")
+                            .fontWeight(.regular)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.white)
+                            .padding(.bottom,30)
+                        
+                        
+                        Button("Buscar parceiro") {
+                            viewModel.startSearch()
+                            
+                            
+                        }
+                        .buttonStyle(.glass)
+                        .frame(maxWidth:.infinity)
+                        .foregroundStyle(.white)
+                        
+                        
+                        
+                    }
+                    .padding(.bottom, 80)
+                    
                 }
-                .buttonStyle(.borderedProminent)
+                
+                
+                
+                
+                
                 
             case .connecting:
-                ProgressView("Buscando e conectando...")
-                Button("Cancelar") {
-                    viewModel.exitGame()
+                
+                ZStack {
+                    Color.azul.ignoresSafeArea()
+                    
+                    VStack {
+                        
+                        Text ("Conectando...")
+                            .font(.largeTitle)
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.white)
+                            .padding()
+                        
+                        Button("Cancelar") {
+                            viewModel.exitGame()
+                        }
+                        .padding()
+                        .buttonStyle(.borderedProminent)
+                    }
                 }
-                .padding()
-                .buttonStyle(.borderedProminent)
+                
+                
+                
                 
             case .ready:
-                Text("Conectado!")
-                    .font(.title)
-                    .padding()
                 
-                if viewModel.isReady {
-                    Text("Aguardando")
-                } else {
-                    Button("Começar Jogo") {
-                        viewModel.markReady()
+                ZStack {
+                    Image ("conectado")
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea()
+                    
+                    VStack {
+                        
+                        Spacer ()
+                        
+                        Text("Conectado!")
+                            .font(.largeTitle)
+                            .fontWeight(.semibold)
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.white)
+                        
+                        if viewModel.isReady {
+                            Text("Aguardando")
+                        } else {
+                            Button("Iniciar Jogo") {
+                                viewModel.markReady()
+                            }
+                            .font(.title)
+                            .buttonStyle(.borderedProminent)
+                        }
+                        
+                        Button("Sair") {
+                            viewModel.exitGame()
+                        }
+                        .padding()
+                        .foregroundStyle(.white)
                     }
-                    .font(.title)
-                    .buttonStyle(.borderedProminent)
+                    .padding(.bottom, 80)
                 }
                 
-                Button("Sair") {
-                    viewModel.exitGame()
-                }
-                .padding()
+                
+                
+                
+                
+                
                 
             case .playing:
+                
+        
                 if viewModel.showBoa {
-                    Text("BOA!")
-                        .font(.system(size: 60, weight: .bold))
-                        .foregroundColor(.green)
-                        .transition(.scale)
+                   
+                    ZStack {
+                        
+                    
+                        Image ("ganhou")
+                            .resizable()
+                            .scaledToFill()
+                            .ignoresSafeArea()
+                        
+                        Text("Parabéns!")
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundColor(.white)
+                            .transition(.scale)
+                        
+                    }
+                    
                 } else {
+                    ZStack {
+                    
                     Text("Fase \(viewModel.phase)")
                         .font(.largeTitle)
                         .bold()
                     
-                    Text(String(format: "Fique dentro de: %.1fm - %.1fm", viewModel.targetMin, viewModel.targetMax))
-                        .font(.title2)
-                        .padding()
+                    Text(
+                        String(
+                            format: "Fique dentro de: %.1fm - %.1fm",
+                            viewModel.targetMin,
+                            viewModel.targetMax
+                        )
+                    )
+                    .font(.title2)
+                    .padding()
                     
-                    if let dist = viewModel.niManager.distance {
-                        Text(String(format: "Distância atual: %.2fm", dist))
-                            .font(.title)
-                            .foregroundColor(dist >= viewModel.targetMin && dist <= viewModel.targetMax ? .green : .red)
+            
+                        if let dist = viewModel.niManager.distance {
+                            Text(String(format: "Distância atual: %.2fm", dist))
+                                .font(.title)
+                                .foregroundColor(
+                                    dist >= viewModel.targetMin && dist <= viewModel.targetMax ? .green : .red
+                                )
+                            
+                        }
                     } else {
                         Text("Calculando distância")
                             .foregroundColor(.gray)
@@ -82,28 +188,35 @@ struct ContentView: View {
                 .padding()
                 
             case .gameOver:
-                Text("Game Over!")
-                    .font(.largeTitle)
-                    .foregroundColor(.red)
-                    .bold()
-                
-                HStack {
-                    Button("Jogar Novamente") {
-                        viewModel.requestPlayAgain()
-                    }
-                    .font(.title2)
-                    .buttonStyle(.borderedProminent)
-                    .padding()
+                ZStack {
+                    Image ("perdeu")
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea()
                     
-                    Button("Sair da sessão") {
-                        viewModel.exitGame()
+                    
+                    VStack {
+                        Text("Você perdeu")
+                            .font(.system(size: 32, weight: .bold))
+                            .foregroundColor(.white)
+                            .bold()
+                    
+                            Button("Jogar Novamente") {
+                                viewModel.requestPlayAgain()
+                            }
+                            .font(.title2)
+                            .buttonStyle(.borderedProminent)
+                            .padding()
+                            
+                            Button("Sair da sessão") {
+                                viewModel.exitGame()
+                            }
+                            .buttonStyle(.bordered)
+                            .padding()
+                        }
                     }
-                    .buttonStyle(.bordered)
-                    .padding()
                 }
-            }
         }
-        .padding()
         .animation(.easeInOut, value: viewModel.state)
         .animation(.easeInOut, value: viewModel.showBoa)
     }
