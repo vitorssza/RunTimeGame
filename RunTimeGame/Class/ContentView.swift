@@ -37,30 +37,18 @@ struct ContentView: View {
                         
                         Button("Buscar parceiro") {
                             viewModel.startSearch()
-                            
-                            
                         }
                         .buttonStyle(.glass)
                         .frame(maxWidth:.infinity)
                         .foregroundStyle(.white)
-                        
-                        
-                        
                     }
                     .padding(.bottom, 80)
                     
                 }
                 
-                
-                
-                
-                
-                
             case .connecting:
-                
                 ZStack {
                     Color.azul.ignoresSafeArea()
-                    
                     VStack {
                         
                         Text ("Conectando...")
@@ -78,11 +66,7 @@ struct ContentView: View {
                     }
                 }
                 
-                
-                
-                
             case .ready:
-                
                 ZStack {
                     Image ("conectado")
                         .resizable()
@@ -90,7 +74,6 @@ struct ContentView: View {
                         .ignoresSafeArea()
                     
                     VStack {
-                        
                         Spacer ()
                         
                         Text("Conectado!")
@@ -118,20 +101,10 @@ struct ContentView: View {
                     .padding(.bottom, 80)
                 }
                 
-                
-                
-                
-                
-                
-                
             case .playing:
-                
-        
                 if viewModel.showBoa {
-                   
-                    ZStack {
-                        
                     
+                    ZStack {
                         Image ("ganhou")
                             .resizable()
                             .scaledToFill()
@@ -141,43 +114,95 @@ struct ContentView: View {
                             .font(.system(size: 32, weight: .bold))
                             .foregroundColor(.white)
                             .transition(.scale)
-                        
                     }
                     
                 } else {
+                    
                     ZStack {
-                    
-                    Text("Fase \(viewModel.phase)")
-                        .font(.largeTitle)
-                        .bold()
-                    
-                    Text(
-                        String(
-                            format: "Fique dentro de: %.1fm - %.1fm",
-                            viewModel.targetMin,
-                            viewModel.targetMax
-                        )
-                    )
-                    .font(.title2)
-                    .padding()
-                    
-            
-                        if let dist = viewModel.niManager.distance {
-                            Text(String(format: "Distância atual: %.2fm", dist))
-                                .font(.title)
-                                .foregroundColor(
-                                    dist >= viewModel.targetMin && dist <= viewModel.targetMax ? .green : .red
-                                )
+                        Image("time")
+                            .resizable()
+                            .scaledToFill()
+                            .ignoresSafeArea()
+                        
+                        VStack {
+                            Text("Fase \(viewModel.phase)")
+                                .font(.largeTitle)
+                                .bold()
+                                .foregroundStyle(.white)
                             
+                            VStack (spacing: -12) {
+                                Text("Fique dentro de")
+                                    .font(.title2)
+                                    .foregroundStyle(.white)
+                                
+                                Text(String(
+                                    format: "%.1fm - %.1fm",
+                                    viewModel.targetMin,
+                                    viewModel.targetMax))
+                                .font(.system(size: 24, weight: .bold))
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.white)
+                                .padding()
+                            }
+                            .padding(.top)
+                            
+                            Rectangle()
+                                .fill(Color.gray)
+                                .frame(height: 2)
+                                .cornerRadius(1)
+                                .padding(.horizontal)
+                                .padding(.bottom, 32)
+                            
+                            
+                            if let dist = viewModel.niManager.distance {
+                                
+                                Text("Distância entre seu parceiro")
+                                    .font(.system(size: 20, weight: .light))
+                                    .foregroundStyle(.white)
+                                
+                                HStack(alignment: .center, spacing: 12) {
+                                    Image(systemName: "figure.stand")
+                                        .font(.system(size: 30))
+                                        .foregroundStyle(
+                                            dist >= viewModel.targetMin && dist <= viewModel.targetMax ? .green : .red)
+                                    Rectangle()
+                                        .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [6, 4]))
+                                        .foregroundStyle(
+                                            dist >= viewModel.targetMin && dist <= viewModel.targetMax ? .green : .red)                                        .frame(height: 1)
+                                    
+                                    Text(String(format: "%.2fm", dist))
+                                        .font(.system(size: 40, weight: .bold))
+                                        .monospacedDigit()
+                                        .lineLimit(1)
+                                        .fixedSize(horizontal: true, vertical: false)
+                                        .layoutPriority(1)
+                                        .foregroundStyle(
+                                            dist >= viewModel.targetMin && dist <= viewModel.targetMax ? .green : .red)
+                                    
+                                    Rectangle()
+                                        .strokeBorder(style: StrokeStyle(lineWidth: 1, dash: [6, 4]))
+                                        .foregroundStyle(
+                                            dist >= viewModel.targetMin && dist <= viewModel.targetMax ? .green : .red)                                        .frame(height: 1)
+                                    
+                                    Image(systemName: "figure.stand")
+                                        .font(.system(size: 30))
+                                        .foregroundStyle(
+                                            dist >= viewModel.targetMin && dist <= viewModel.targetMax ? .green : .red)                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.horizontal, 32)
+                                
+                            } else {
+                                Text("Calculando distância")
+                                    .foregroundColor(.white)
+                            }
+                            
+                            Text("\(viewModel.timeRemaining)\nsegundos")
+                                .font(.system(size: 40, weight: .bold))
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.white)
+                                .padding(.top, 300)
                         }
-                    } else {
-                        Text("Calculando distância")
-                            .foregroundColor(.gray)
                     }
-                    
-                    Text("\(viewModel.timeRemaining) segundos")
-                        .font(.system(size: 80, weight: .bold))
-                        .padding()
                 }
                 
                 Spacer()
@@ -194,28 +219,27 @@ struct ContentView: View {
                         .scaledToFill()
                         .ignoresSafeArea()
                     
-                    
                     VStack {
                         Text("Você perdeu")
                             .font(.system(size: 32, weight: .bold))
                             .foregroundColor(.white)
                             .bold()
-                    
-                            Button("Jogar Novamente") {
-                                viewModel.requestPlayAgain()
-                            }
-                            .font(.title2)
-                            .buttonStyle(.borderedProminent)
-                            .padding()
-                            
-                            Button("Sair da sessão") {
-                                viewModel.exitGame()
-                            }
-                            .buttonStyle(.bordered)
-                            .padding()
+                        
+                        Button("Jogar Novamente") {
+                            viewModel.requestPlayAgain()
                         }
+                        .font(.title2)
+                        .buttonStyle(.borderedProminent)
+                        .padding()
+                        
+                        Button("Sair da sessão") {
+                            viewModel.exitGame()
+                        }
+                        .buttonStyle(.bordered)
+                        .padding()
                     }
                 }
+            }
         }
         .animation(.easeInOut, value: viewModel.state)
         .animation(.easeInOut, value: viewModel.showBoa)
