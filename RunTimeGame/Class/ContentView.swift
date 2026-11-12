@@ -88,7 +88,6 @@ struct ContentView: View {
                             Button("Iniciar Jogo") {
                                 viewModel.markReady()
                             }
-                            .font(.title)
                             .buttonStyle(.borderedProminent)
                         }
                         
@@ -220,7 +219,7 @@ struct ContentView: View {
                         .ignoresSafeArea()
                     
                     VStack {
-                        Text("Você perdeu")
+                        Text("Você perdeu!")
                             .font(.system(size: 32, weight: .bold))
                             .foregroundColor(.white)
                             .bold()
@@ -228,7 +227,6 @@ struct ContentView: View {
                         Button("Jogar Novamente") {
                             viewModel.requestPlayAgain()
                         }
-                        .font(.title2)
                         .buttonStyle(.borderedProminent)
                         .padding()
                         
@@ -236,6 +234,7 @@ struct ContentView: View {
                             viewModel.exitGame()
                         }
                         .buttonStyle(.bordered)
+                        .foregroundStyle(.white)
                         .padding()
                     }
                 }

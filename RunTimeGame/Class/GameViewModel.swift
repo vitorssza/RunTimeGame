@@ -7,7 +7,7 @@ class GameViewModel {
     
     var state: GameState = .disconnected
     var phase: Int = 1
-    var timeRemaining: Int = 10
+    var timeRemaining: Int = 5
     var targetMin: Float = 0.0
     var targetMax: Float = 0.0
     var showBoa: Bool = false
@@ -76,7 +76,7 @@ class GameViewModel {
         niManager.stop()
         state = .disconnected
         phase = 1
-        timeRemaining = 10
+        timeRemaining = 5
         isReady = false
         isOpponentReady = false
         showBoa = false
@@ -104,7 +104,7 @@ class GameViewModel {
                 self.phase = ph
                 self.targetMin = min
                 self.targetMax = max
-                self.timeRemaining = 10
+                self.timeRemaining = 5
                 self.startTimer()
                 self.showBoaTemp()
             }
@@ -125,7 +125,7 @@ class GameViewModel {
         
         self.targetMin = minRange
         self.targetMax = maxRange
-        self.timeRemaining = 10
+        self.timeRemaining = 5
         self.startTimer()
         self.showBoaTemp()
     }
@@ -180,7 +180,7 @@ class GameViewModel {
         timer?.invalidate()
         state = .ready
         phase = 1
-        timeRemaining = 10
+        timeRemaining = 5
         isReady = false
         isOpponentReady = false
         showBoa = false
